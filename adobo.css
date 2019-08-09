@@ -1,0 +1,47 @@
+
+/* FLEX */
+.flex,
+.fx-e,.fx-end,
+.fx-c,.fx-center,
+.fx-s,.fx-start,
+.fx-sb,.fx-space-between,
+.fx-sa,.fx-space-around, 
+.fx-t,.fx-top,
+.fx-m,.fx-middle,
+.fx-b,.fx-bottom,
+.fx-center-vh,
+.fx-r,.fx-row,
+.fx-rr,.fx-row-reverse 
+{display: flex;}
+
+.fx-e,.fx-end
+{justify-content:flex-end;}
+
+.fx-s,.fx-start
+{justify-content:flex-start;}
+
+.fx-c,.fx-center,
+.fx-center-vh
+{justify-content:center;}
+
+.fx-sb,.fx-space-between 
+{justify-content:space-between;}
+
+.fx-sa,.fx-space-around 
+{justify-content:space-around;}
+ 
+.fx-t,.fx-top
+{align-items: flex-start;}
+
+.fx-m,.fx-middle,
+.fx-center-vh
+{align-items: center;}
+ 
+.fx-b,.fx-bottom
+{align-items: flex-end;}
+
+.fx-r ,.fx-row 
+{ flex-direction:row;}
+
+.fx-rr,.fx-row-reverse 
+{ flex-direction:row-reverse;}
