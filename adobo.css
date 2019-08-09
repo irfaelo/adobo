@@ -12,17 +12,22 @@
 .fx-center-vh,
 .fx-r,.fx-row,
 .fx-rr,.fx-row-reverse 
+.fx-1,.fx-2,.fx-3,.fx-4,.fx-5,.fx-6,.fx-7,.fx-8,.fx-9 /* 9-grid */ 
 {display: flex;}
 
-.fx-e,.fx-end
-{justify-content:flex-end;}
 
-.fx-s,.fx-start
+.fx-s,.fx-start, 
+.fx-1,.fx-4,.fx-7
 {justify-content:flex-start;}
 
 .fx-c,.fx-center,
-.fx-center-vh
-{justify-content:center;}
+.fx-center-vh, 
+.fx-2,.fx-5,.fx-8
+{justify-content:center;} 
+
+.fx-e,.fx-end, 
+.fx-3,.fx-6,.fx-9
+{justify-content:flex-end;}
 
 .fx-sb,.fx-space-between 
 {justify-content:space-between;}
@@ -30,14 +35,17 @@
 .fx-sa,.fx-space-around 
 {justify-content:space-around;}
  
-.fx-t,.fx-top
+.fx-t,.fx-top, 
+.fx-1,.fx-2,.fx-3
 {align-items: flex-start;}
 
 .fx-m,.fx-middle,
-.fx-center-vh
+.fx-center-vh, 
+.fx-4,.fx-5,.fx-6
 {align-items: center;}
  
-.fx-b,.fx-bottom
+.fx-b,.fx-bottom, 
+.fx-7,.fx-8,.fx-9
 {align-items: flex-end;}
 
 .fx-r ,.fx-row 
