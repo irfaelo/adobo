@@ -1,0 +1,88 @@
+//(c) IndianaYourself / @irfaelo / Ignacio Ramos 2015-2023
+//browser properties
+$breakpoints: (s: 575px, m: 767px, t: 991px, l: 1199px, d: 1399px, x: 1400px); 
+$orientation: (l: "landscape", p: "portrait" ); 
+//fontsize
+$font-sizes: ( 1: 12px, 2: 14px, 3: 16px, 4: 18px, 5: 20px, 6: 22px ); 
+//text align
+$sides: (l:left, r:right);
+$alignment: map-merge($sides, (c:center, j:justify) ); 
+ 
+//spaces, margins and paddings
+$spaces: ( 0:0, 1:1em,2:2em,3:3em,4:4em,5:5em,6:6em); 
+$new-spaces: ();
+@for $i from 0 through length($spaces)-1 {
+  $key: if($i < length($spaces), "#{$i}", $i); 
+  $new-spaces: map-merge($new-spaces, (0+$key:"0 #{map-get($spaces, $i)}"));  
+  $new-spaces: map-merge($new-spaces, ($key+0:"#{map-get($spaces, $i)} 0"));
+}
+
+//widths
+$widths: (); 
+@for $i from 1 through 12 { 
+  $widths: map-merge($widths, (#{$i}: $i / 12 * 100% ));
+}
+ 
+//##### MIXINS AND AUXILIARY FUNCTIONS #####
+//prop: creates a css class
+@mixin prop ($class, $prop, $val)
+{
+      .#{$class} { 
+          #{$prop}: #{$val};
+       }
+}
+  
+// *rwd_looper: creates all rwd classes by breakpoints
+@mixin rwd_looper( $prop, $class-prefix,$values) {  
+      @each $i, $v in $values {
+          @include prop( #{$class-prefix}#{$i} , #{$prop} , $v); 
+      }
+  @each $prefix, $value in $breakpoints {
+    @media (min-width: $value) {
+      @each $i, $v in $values {
+          @include prop( #{$class-prefix}#{$i}--#{$prefix} , #{$prop} , $v); 
+      }
+    }
+  }
+}
+ 
+//widths
+@each $prefix, $value in $breakpoints {
+  @media (min-width: $value) {
+    
+    //classes without orientation
+      @include prop( w0--+#{$prefix}, display , none);  
+    @each $i, $width in $widths { 
+      @include prop( w#{$i}--+#{$prefix}, width, $width);  
+    }
+   
+    //classes with orientation
+    @if $prefix == s or $prefix == m or $prefix == t {
+      @each $o, $or in $orientation {
+        @media (orientation: $or) {
+            
+      @include prop( w0--#{$prefix}#{$o}, "display" , "none");  
+          @each $i, $width in $widths {
+              @include prop( w#{$i}--#{$prefix}#{$o}, width, $width);  
+          }
+        }
+      }
+    }
+  }
+}
+//--------------- 
+
+//responsives classes
+@include rwd_looper( "font-size", "fs", $font-sizes ); 
+
+@include rwd_looper( "margin", "m", $spaces ); 
+
+@include rwd_looper( "margin", "m", $new-spaces ); 
+
+@include rwd_looper( "padding", "p", $spaces ); 
+
+@include rwd_looper( "padding", "p", $new-spaces ); 
+
+@include rwd_looper( "text-align", "t", $alignment );
+
+@include rwd_looper( "float", "f", $sides); 
