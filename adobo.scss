@@ -31,7 +31,10 @@ $widths: ();
           #{$prop}: #{$val};
        }
 }
-  
+
+@each $i, $width in $widths {
+  @include prop( w#{$i}, width, $width);  
+}  
 // *rwd_looper: creates all rwd classes by breakpoints
 @mixin rwd_looper( $prop, $class-prefix,$values) {  
       @each $i, $v in $values {
@@ -71,18 +74,11 @@ $widths: ();
   }
 }
 //--------------- 
-
-//responsives classes
+//responsives classes 
 @include rwd_looper( "font-size", "fs", $font-sizes ); 
-
 @include rwd_looper( "margin", "m", $spaces ); 
-
 @include rwd_looper( "margin", "m", $new-spaces ); 
-
 @include rwd_looper( "padding", "p", $spaces ); 
-
 @include rwd_looper( "padding", "p", $new-spaces ); 
-
 @include rwd_looper( "text-align", "t", $alignment );
-
 @include rwd_looper( "float", "f", $sides); 
