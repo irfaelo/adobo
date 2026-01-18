@@ -1,0 +1,37 @@
+@mixin cols-generator($values) {
+  @each $key, $list in $values {
+
+    /* ===== Base ===== */
+    .cols-#{$key} {
+      @include cols-layout($list);
+    }
+
+    /* ===== Breakpoints normales ===== */
+    @each $bp, $size in $breakpoints {
+      @media (min-width: $size) {
+        .cols-#{$key}--#{$bp} {
+          @include cols-layout($list);
+        }
+      }
+    }
+
+    /* ===== Tablet + orientación ===== */
+    @each $oKey, $oVal in $orientation {
+      @media (min-width: map-get($breakpoints, t)) and (orientation: #{$oVal}) {
+        .cols-#{$key}--t#{$oKey} {
+          @include cols-layout($list);
+        }
+      }
+    }
+
+    /* ===== Mobile + orientación ===== */
+    @each $oKey, $oVal in $orientation {
+      @media (min-width: map-get($breakpoints, m)) and (orientation: #{$oVal}) {
+        .cols-#{$key}--m#{$oKey} {
+          @include cols-layout($list);
+        }
+      }
+    }
+
+  }
+}
