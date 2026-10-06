@@ -1,38 +1,79 @@
-@mixin cols-generator($values) {
-  @each $key, $list in $values {
+// 1. Mapping for breakpoint sizes 
+$breakpoints: (
+  's': 576px,
+  'm': 768px,
+  't': 992px,
+  'l': 1200px,
+  'd': 1400px
+); 
 
-    /* ===== Base ===== */
-    .cols-#{$key} {
-      @include cols-layout($list);
-    }
+$orientation: (
+  'l': 'landscape',
+  'p': 'portrait'
+);
 
-    /* ===== Breakpoints normales ===== */
-    @each $bp, $size in $breakpoints {
-      @media (min-width: $size) {
-        .cols-#{$key}--#{$bp} {
-          @include cols-layout($list);
-        }
+$fxcol-values: (
+  1: 100%,
+  13: (33.333333%, 66.666667%),
+  2: (50%, 50%),
+  31: (66.666667%, 33.333333%),
+  3: (33.333333%, 33.333333%, 33.333333%),
+  4: (25%, 25%, 25%, 25%),
+  5: (20%, 20%, 20%, 20%, 20%)
+);
+
+// 2. Mixin design struct
+@mixin fxcol-layout($values) {
+  display: flex;
+  flex-wrap: wrap; 
+
+  @if type-of($values) == 'list' {
+    @for $i from 1 through length($values) {
+      > :nth-child(#{$i}) {
+        flex: 0 0 nth($values, $i);
+        max-width: nth($values, $i);
       }
     }
-
-    /* ===== Tablet + orientación ===== */
-    @each $oKey, $oVal in $orientation {
-      @media (min-width: map-get($breakpoints, t)) and (orientation: #{$oVal}) {
-        .cols-#{$key}--t#{$oKey} {
-          @include cols-layout($list);
-        }
-      }
+  } @else {
+    > * {
+      box-sizing: border-box;
+      flex: 0 0 $values;
+      max-width: $values;
     }
-
-    /* ===== Mobile + orientación ===== */
-    @each $oKey, $oVal in $orientation {
-      @media (min-width: map-get($breakpoints, m)) and (orientation: #{$oVal}) {
-        .cols-#{$key}--m#{$oKey} {
-          @include cols-layout($list);
-        }
-      }
-    }
-
   }
 }
-@include cols-generator($cols-values);
+
+// 3. Mixin generator for CSS classes
+@mixin fxcol-generator($values) {
+  @each $key, $layout in $values {
+    
+    // Base (Mobile First)
+    .fxcol-#{$key} {
+      @include fxcol-layout($layout);
+    }
+
+    // Breakpoints & Orientation
+    @each $bp, $size in $breakpoints {
+      
+      // Solo Breakpoint
+      @media (min-width: $size) {
+        .fxcol-#{$key}--#{$bp} {
+          @include fxcol-layout($layout);
+        }
+      }
+
+      // Breakpoint + Orientation  (works fine for fit CSS nesting)
+      @each $oKey, $orientation-value in $orientation {
+        @media (min-width: $size) and (orientation: #{$orientation-value}) {
+          .fxcol-#{$key}--#{$bp}-#{$oKey} {
+            @include fxcol-layout($layout);
+          }
+        }
+      }
+    }
+    
+  }
+}
+
+// 4. Generate it
+@include fxcol-generator($fxcol-values);
